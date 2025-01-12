@@ -1,0 +1,69 @@
+{% extends "produk/main.html" %}
+
+{% block title %}Daftar Produk{% endblock %}
+
+{% block content %}
+<div class="card mt-4">
+  <div class="card-header">
+    <h5 class="card-title">Formulir Produk</h5>
+  </div>
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <label for="nama_produk" class="form-label">Nama Produk:</label>
+        <input 
+          type="text" 
+          id="nama_produk" 
+          name="nama_produk" 
+          class="form-control" 
+          value="{{ produk.nama_produk|default:'' }}" 
+          required />
+      </div>
+
+      <div class="mb-3">
+        <label for="harga" class="form-label">Harga:</label>
+        <input 
+          type="number" 
+          id="harga" 
+          name="harga" 
+          class="form-control" 
+          value="{{ produk.harga|default:'' }}" 
+          required />
+      </div>
+
+      <div class="mb-3">
+        <label for="kategori_id" class="form-label">Kategori:</label>
+        <select id="kategori_id" name="kategori_id" class="form-select" required>
+          <option value="" disabled {% if not produk %}selected{% endif %}>Pilih Kategori</option>
+          {% for kategori in kategoris %}
+          <option 
+            value="{{ kategori.id }}" 
+            {% if produk and kategori.id == produk.kategori_id %}selected{% endif %}>
+            {{ kategori.nama_kategori }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="status_id" class="form-label">Status:</label>
+        <select id="status_id" name="status_id" class="form-select" required>
+          <option value="" disabled {% if not produk %}selected{% endif %}>Pilih Status</option>
+          {% for status in statuses %}
+          <option 
+            value="{{ status.id }}" 
+            {% if produk and status.id == produk.status_id %}selected{% endif %}>
+            {{ status.nama_status }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
